@@ -18,18 +18,18 @@
 apiVersion: v1 # Uses the core API group version 'v1'
 kind: Pod # Specifies that this object is a Pod
 metadata:
-    name: my-pod # Unique name of the Pod within the namespace
-    labels:
-        app: my-app # Key-value pairs to categorize and select the Pod
+  name: my-pod # Unique name of the Pod within the namespace
+  labels:
+    app: my-app # Key-value pairs to categorize and select the Pod
 spec:
-    containers:
-        - name: my-container # Name of the container within the Pod
-          image: nginx:1.19 # Docker image to run in the container
-          ports:
-              - containerPort: 80 # Port that the container listens on
-          env:
-              - name: ENVIRONMENT # Name of an environment variable
-                value: 'production' # Value of the environment variable
+  containers:
+    - name: my-container # Name of the container within the Pod
+      image: nginx:1.19 # Docker image to run in the container
+      ports:
+        - containerPort: 80 # Port that the container listens on
+      env:
+        - name: ENVIRONMENT # Name of an environment variable
+          value: 'production' # Value of the environment variable
 
 ---
 # 2. Deployment
@@ -42,22 +42,22 @@ spec:
 apiVersion: apps/v1 # Uses the 'apps' API group version 'v1'
 kind: Deployment # Specifies that this object is a Deployment
 metadata:
-    name: my-deployment # Unique name of the Deployment within the namespace
+  name: my-deployment # Unique name of the Deployment within the namespace
 spec:
-    replicas: 3 # Desired number of Pod replicas
-    selector:
-        matchLabels:
-            app: my-app # Label selector to identify Pods managed by this Deployment
-    template: # Template for the Pods created by the Deployment
-        metadata:
-            labels:
-                app: my-app # Labels applied to the Pods created
-        spec:
-            containers:
-                - name: my-container
-                  image: nginx:1.19
-                  ports:
-                      - containerPort: 80 # Port that the container exposes
+  replicas: 3 # Desired number of Pod replicas
+  selector:
+    matchLabels:
+      app: my-app # Label selector to identify Pods managed by this Deployment
+  template: # Template for the Pods created by the Deployment
+    metadata:
+      labels:
+        app: my-app # Labels applied to the Pods created
+    spec:
+      containers:
+        - name: my-container
+          image: nginx:1.19
+          ports:
+            - containerPort: 80 # Port that the container exposes
 
 ---
 # 3. Service
@@ -70,15 +70,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-    name: my-service # Unique name of the Service within the namespace
+  name: my-service # Unique name of the Service within the namespace
 spec:
-    selector:
-        app: my-app # Selects Pods with this label to route traffic to
-    ports:
-        - protocol: TCP # Protocol used (TCP or UDP)
-          port: 80 # Port that the Service exposes internally
-          targetPort: 80 # Port on the Pod that the traffic is directed to
-    type: ClusterIP # Type of Service (ClusterIP, NodePort, LoadBalancer, ExternalName)
+  selector:
+    app: my-app # Selects Pods with this label to route traffic to
+  ports:
+    - protocol: TCP # Protocol used (TCP or UDP)
+      port: 80 # Port that the Service exposes internally
+      targetPort: 80 # Port on the Pod that the traffic is directed to
+  type: ClusterIP # Type of Service (ClusterIP, NodePort, LoadBalancer, ExternalName)
 
 ---
 # 4. ConfigMap
@@ -90,10 +90,10 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-    name: my-config # Unique name of the ConfigMap within the namespace
+  name: my-config # Unique name of the ConfigMap within the namespace
 data:
-    DATABASE_URL: 'localhost:5432' # Key-value pairs storing configuration data
-    DATABASE_USER: 'admin' # Additional configuration parameters
+  DATABASE_URL: 'localhost:5432' # Key-value pairs storing configuration data
+  DATABASE_USER: 'admin' # Additional configuration parameters
 
 ---
 # 5. Secret
@@ -106,11 +106,11 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-    name: my-secret # Unique name of the Secret within the namespace
+  name: my-secret # Unique name of the Secret within the namespace
 type: Opaque # Indicates a generic Secret (other types include kubernetes.io/tls)
 data:
-    password: cGFzc3dvcmQ= # Base64 encoded value of 'password' ('password' encoded is 'cGFzc3dvcmQ=')
-    username: YWRtaW4= # Base64 encoded value of 'admin' ('admin' encoded is 'YWRtaW4=')
+  password: cGFzc3dvcmQ= # Base64 encoded value of 'password' ('password' encoded is 'cGFzc3dvcmQ=')
+  username: YWRtaW4= # Base64 encoded value of 'admin' ('admin' encoded is 'YWRtaW4=')
 # Note: Use `echo -n 'your_value' | base64` to encode data before putting into the Secret.
 
 ---
@@ -124,15 +124,15 @@ data:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: my-pv # Unique name of the PersistentVolume within the cluster
+  name: my-pv # Unique name of the PersistentVolume within the cluster
 spec:
-    capacity:
-        storage: 1Gi # Total amount of storage provided by the volume
-    accessModes:
-        - ReadWriteOnce # Access mode (ReadWriteOnce, ReadOnlyMany, ReadWriteMany)
-    persistentVolumeReclaimPolicy: Retain # Policy for reclaiming the volume after it is released (Retain, Recycle, Delete)
-    hostPath:
-        path: /data # Filesystem path on the host node
+  capacity:
+    storage: 1Gi # Total amount of storage provided by the volume
+  accessModes:
+    - ReadWriteOnce # Access mode (ReadWriteOnce, ReadOnlyMany, ReadWriteMany)
+  persistentVolumeReclaimPolicy: Retain # Policy for reclaiming the volume after it is released (Retain, Recycle, Delete)
+  hostPath:
+    path: /data # Filesystem path on the host node
 
 ---
 # 7. PersistentVolumeClaim
@@ -146,13 +146,13 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-    name: my-pvc # Unique name of the PersistentVolumeClaim within the namespace
+  name: my-pvc # Unique name of the PersistentVolumeClaim within the namespace
 spec:
-    accessModes:
-        - ReadWriteOnce # Desired access mode
-    resources:
-        requests:
-            storage: 1Gi # Amount of storage requested
+  accessModes:
+    - ReadWriteOnce # Desired access mode
+  resources:
+    requests:
+      storage: 1Gi # Amount of storage requested
 
 ---
 # 8. StatefulSet
@@ -165,35 +165,35 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-    name: my-statefulset # Unique name of the StatefulSet within the namespace
+  name: my-statefulset # Unique name of the StatefulSet within the namespace
 spec:
-    serviceName: 'my-service' # Name of the Service governing the StatefulSet
-    replicas: 3 # Desired number of Pod replicas
-    selector:
-        matchLabels:
-            app: my-app # Label selector for Pods managed by the StatefulSet
-    template:
-        metadata:
-            labels:
-                app: my-app # Labels applied to the Pods
-        spec:
-            terminationGracePeriodSeconds: 10 # Time given to the Pod to terminate gracefully
-            containers:
-                - name: my-container
-                  image: nginx:1.19
-                  ports:
-                      - containerPort: 80
-                  volumeMounts:
-                      - name: data
-                        mountPath: /data # Path inside the container where the volume is mounted
-    volumeClaimTemplates:
-        - metadata:
-              name: data # Name of the volume, referenced in volumeMounts
-          spec:
-              accessModes: ['ReadWriteOnce']
-              resources:
-                  requests:
-                      storage: 1Gi # Storage size requested for each Pod's volume
+  serviceName: 'my-service' # Name of the Service governing the StatefulSet
+  replicas: 3 # Desired number of Pod replicas
+  selector:
+    matchLabels:
+      app: my-app # Label selector for Pods managed by the StatefulSet
+  template:
+    metadata:
+      labels:
+        app: my-app # Labels applied to the Pods
+    spec:
+      terminationGracePeriodSeconds: 10 # Time given to the Pod to terminate gracefully
+      containers:
+        - name: my-container
+          image: nginx:1.19
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: data
+              mountPath: /data # Path inside the container where the volume is mounted
+  volumeClaimTemplates:
+    - metadata:
+        name: data # Name of the volume, referenced in volumeMounts
+      spec:
+        accessModes: ['ReadWriteOnce']
+        resources:
+          requests:
+            storage: 1Gi # Storage size requested for each Pod's volume
 
 ---
 # 9. DaemonSet
@@ -207,19 +207,19 @@ spec:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-    name: my-daemonset # Unique name of the DaemonSet within the namespace
+  name: my-daemonset # Unique name of the DaemonSet within the namespace
 spec:
-    selector:
-        matchLabels:
-            app: my-app # Label selector for Pods managed by the DaemonSet
-    template:
-        metadata:
-            labels:
-                app: my-app # Labels applied to the Pods
-        spec:
-            containers:
-                - name: my-container
-                  image: fluentd:latest # Image to run on each node (e.g., a logging agent)
+  selector:
+    matchLabels:
+      app: my-app # Label selector for Pods managed by the DaemonSet
+  template:
+    metadata:
+      labels:
+        app: my-app # Labels applied to the Pods
+    spec:
+      containers:
+        - name: my-container
+          image: fluentd:latest # Image to run on each node (e.g., a logging agent)
 
 ---
 # 10. Job
@@ -233,17 +233,17 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-    name: my-job # Unique name of the Job within the namespace
+  name: my-job # Unique name of the Job within the namespace
 spec:
-    completions: 1 # Total number of successful completions desired
-    parallelism: 1 # Maximum number of Pods to run in parallel
-    template:
-        spec:
-            containers:
-                - name: my-container
-                  image: busybox
-                  command: ['echo', 'Hello World'] # Command executed by the container
-            restartPolicy: Never # Do not restart containers upon failure
+  completions: 1 # Total number of successful completions desired
+  parallelism: 1 # Maximum number of Pods to run in parallel
+  template:
+    spec:
+      containers:
+        - name: my-container
+          image: busybox
+          command: ['echo', 'Hello World'] # Command executed by the container
+      restartPolicy: Never # Do not restart containers upon failure
 
 ---
 # 11. CronJob
@@ -256,18 +256,18 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-    name: my-cronjob # Unique name of the CronJob within the namespace
+  name: my-cronjob # Unique name of the CronJob within the namespace
 spec:
-    schedule: '0 0 * * *' # Cron format schedule (runs at midnight every day)
-    jobTemplate:
+  schedule: '0 0 * * *' # Cron format schedule (runs at midnight every day)
+  jobTemplate:
+    spec:
+      template:
         spec:
-            template:
-                spec:
-                    containers:
-                        - name: my-container
-                          image: busybox
-                          command: ['echo', 'Hello World']
-                    restartPolicy: OnFailure # Restart containers upon failure
+          containers:
+            - name: my-container
+              image: busybox
+              command: ['echo', 'Hello World']
+          restartPolicy: OnFailure # Restart containers upon failure
 
 ---
 # 12. Ingress
@@ -280,19 +280,19 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-    name: my-ingress # Unique name of the Ingress within the namespace
+  name: my-ingress # Unique name of the Ingress within the namespace
 spec:
-    rules:
-        - host: example.com # Domain name for the Ingress rule
-          http:
-              paths:
-                  - path: / # URL path to match
-                    pathType: Prefix # Type of path matching (Prefix, Exact, ImplementationSpecific)
-                    backend:
-                        service:
-                            name: my-service # Name of the Service to route traffic to
-                            port:
-                                number: 80 # Port of the Service
+  rules:
+    - host: example.com # Domain name for the Ingress rule
+      http:
+        paths:
+          - path: / # URL path to match
+            pathType: Prefix # Type of path matching (Prefix, Exact, ImplementationSpecific)
+            backend:
+              service:
+                name: my-service # Name of the Service to route traffic to
+                port:
+                  number: 80 # Port of the Service
 
 ---
 # 13. ServiceAccount
@@ -305,7 +305,7 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-    name: my-serviceaccount # Unique name of the ServiceAccount within the namespace
+  name: my-serviceaccount # Unique name of the ServiceAccount within the namespace
 
 ---
 # 14. Role
@@ -317,12 +317,12 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-    namespace: default # Namespace where the Role applies
-    name: pod-reader # Unique name of the Role within the namespace
+  namespace: default # Namespace where the Role applies
+  name: pod-reader # Unique name of the Role within the namespace
 rules:
-    - apiGroups: [''] # "" indicates the core API group
-      resources: ['pods'] # Resources this Role grants access to
-      verbs: ['get', 'watch', 'list'] # Allowed actions (verbs) on the resources
+  - apiGroups: [''] # "" indicates the core API group
+    resources: ['pods'] # Resources this Role grants access to
+    verbs: ['get', 'watch', 'list'] # Allowed actions (verbs) on the resources
 
 ---
 # 14. RoleBinding
@@ -334,16 +334,16 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-    name: read-pods # Unique name of the RoleBinding within the namespace
-    namespace: default
+  name: read-pods # Unique name of the RoleBinding within the namespace
+  namespace: default
 subjects:
-    - kind: User # Type of subject (User, Group, ServiceAccount)
-      name: jane # Name of the user the Role is bound to
-      apiGroup: rbac.authorization.k8s.io
-roleRef:
-    kind: Role # Kind of the Role being referred to
-    name: pod-reader # Name of the Role being referred to
+  - kind: User # Type of subject (User, Group, ServiceAccount)
+    name: jane # Name of the user the Role is bound to
     apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role # Kind of the Role being referred to
+  name: pod-reader # Name of the Role being referred to
+  apiGroup: rbac.authorization.k8s.io
 
 ---
 # 15. ClusterRole
@@ -355,11 +355,11 @@ roleRef:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-    name: cluster-admin # Unique name of the ClusterRole within the cluster
+  name: cluster-admin # Unique name of the ClusterRole within the cluster
 rules:
-    - apiGroups: ['*'] # Applies to all API groups
-      resources: ['*'] # Applies to all resources
-      verbs: ['*'] # Allows all actions (create, get, list, watch, etc.)
+  - apiGroups: ['*'] # Applies to all API groups
+    resources: ['*'] # Applies to all resources
+    verbs: ['*'] # Allows all actions (create, get, list, watch, etc.)
 
 ---
 # 15. ClusterRoleBinding
@@ -371,15 +371,15 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-    name: admin-binding # Unique name of the ClusterRoleBinding within the cluster
+  name: admin-binding # Unique name of the ClusterRoleBinding within the cluster
 subjects:
-    - kind: User
-      name: admin # Name of the user the ClusterRole is bound to
-      apiGroup: rbac.authorization.k8s.io
-roleRef:
-    kind: ClusterRole # Kind of the ClusterRole being referred to
-    name: cluster-admin # Name of the ClusterRole being referred to
+  - kind: User
+    name: admin # Name of the user the ClusterRole is bound to
     apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole # Kind of the ClusterRole being referred to
+  name: cluster-admin # Name of the ClusterRole being referred to
+  apiGroup: rbac.authorization.k8s.io
 
 ---
 # 16. NetworkPolicy
@@ -391,21 +391,21 @@ roleRef:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-    name: allow-nginx # Unique name of the NetworkPolicy within the namespace
-    namespace: default
+  name: allow-nginx # Unique name of the NetworkPolicy within the namespace
+  namespace: default
 spec:
-    podSelector:
-        matchLabels:
-            app: nginx # Selects Pods with the label 'app: nginx' to apply the policy to
-    policyTypes:
-        - Ingress # Policy applies to ingress traffic
-    ingress:
-        - from:
-              - ipBlock:
-                cidr: 172.17.0.0/16 # Allow traffic from this CIDR block
-          ports:
-              - protocol: TCP
-                port: 80 # Allow traffic on this port
+  podSelector:
+    matchLabels:
+      app: nginx # Selects Pods with the label 'app: nginx' to apply the policy to
+  policyTypes:
+    - Ingress # Policy applies to ingress traffic
+  ingress:
+    - from:
+        - ipBlock:
+          cidr: 172.17.0.0/16 # Allow traffic from this CIDR block
+      ports:
+        - protocol: TCP
+          port: 80 # Allow traffic on this port
 
 ---
 # 17. HorizontalPodAutoscaler
@@ -417,21 +417,21 @@ spec:
 apiVersion: autoscaling/v2 # Version of the autoscaling API
 kind: HorizontalPodAutoscaler
 metadata:
-    name: my-hpa # Unique name of the HPA within the namespace
+  name: my-hpa # Unique name of the HPA within the namespace
 spec:
-    scaleTargetRef:
-        apiVersion: apps/v1
-        kind: Deployment
-        name: my-deployment # Name of the Deployment to scale
-    minReplicas: 1 # Minimum number of Pods to scale down to
-    maxReplicas: 10 # Maximum number of Pods to scale up to
-    metrics:
-        - type: Resource # Type of metric (Resource, Pods, Object)
-          resource:
-              name: cpu # Resource type to monitor (cpu, memory)
-              target:
-                  type: Utilization
-                  averageUtilization: 50 # Target average CPU utilization percentage
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: my-deployment # Name of the Deployment to scale
+  minReplicas: 1 # Minimum number of Pods to scale down to
+  maxReplicas: 10 # Maximum number of Pods to scale up to
+  metrics:
+    - type: Resource # Type of metric (Resource, Pods, Object)
+      resource:
+        name: cpu # Resource type to monitor (cpu, memory)
+        target:
+          type: Utilization
+          averageUtilization: 50 # Target average CPU utilization percentage
 
 ---
 # 18. Pod with Volume
@@ -444,18 +444,18 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-    name: volume-demo # Unique name of the Pod within the namespace
+  name: volume-demo # Unique name of the Pod within the namespace
 spec:
-    containers:
-        - name: volume-demo-container
-          image: nginx:1.19
-          volumeMounts:
-              - mountPath: '/usr/share/nginx/html' # Path inside the container to mount the volume
-                name: html-volume # Reference to the volume defined below
-    volumes:
-        - name: html-volume # Name of the volume
-          configMap:
-              name: my-config # Name of the ConfigMap to use as the volume source
+  containers:
+    - name: volume-demo-container
+      image: nginx:1.19
+      volumeMounts:
+        - mountPath: '/usr/share/nginx/html' # Path inside the container to mount the volume
+          name: html-volume # Reference to the volume defined below
+  volumes:
+    - name: html-volume # Name of the volume
+      configMap:
+        name: my-config # Name of the ConfigMap to use as the volume source
 
 ---
 # 19. Pod Disruption Budget
@@ -467,12 +467,12 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-    name: my-pdb # Unique name of the PDB within the namespace
+  name: my-pdb # Unique name of the PDB within the namespace
 spec:
-    minAvailable: 2 # Minimum number of Pods that must be available after a voluntary eviction
-    selector:
-        matchLabels:
-            app: my-app # Selects Pods with the label 'app: my-app'
+  minAvailable: 2 # Minimum number of Pods that must be available after a voluntary eviction
+  selector:
+    matchLabels:
+      app: my-app # Selects Pods with the label 'app: my-app'
 
 ---
 # 20. ResourceQuota
@@ -484,13 +484,13 @@ spec:
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-    name: compute-resources # Unique name of the ResourceQuota within the namespace
+  name: compute-resources # Unique name of the ResourceQuota within the namespace
 spec:
-    hard:
-        requests.cpu: '2' # Maximum total CPU requests for the namespace
-        requests.memory: 1Gi # Maximum total memory requests for the namespace
-        limits.cpu: '4' # Maximum total CPU limits for the namespace
-        limits.memory: 2Gi # Maximum total memory limits for the namespace
+  hard:
+    requests.cpu: '2' # Maximum total CPU requests for the namespace
+    requests.memory: 1Gi # Maximum total memory requests for the namespace
+    limits.cpu: '4' # Maximum total CPU limits for the namespace
+    limits.memory: 2Gi # Maximum total memory limits for the namespace
 
 ---
 # 21. LimitRange
@@ -502,16 +502,16 @@ spec:
 apiVersion: v1
 kind: LimitRange
 metadata:
-    name: limits # Unique name of the LimitRange within the namespace
+  name: limits # Unique name of the LimitRange within the namespace
 spec:
-    limits:
-        - max:
-              cpu: '2' # Maximum CPU limit per Container
-              memory: 1Gi # Maximum memory limit per Container
-          min:
-              cpu: 200m # Minimum CPU request per Container (200 milli-cores)
-              memory: 6Mi # Minimum memory request per Container
-          type: Container # Type of object the limits apply to (Container or Pod)
+  limits:
+    - max:
+        cpu: '2' # Maximum CPU limit per Container
+        memory: 1Gi # Maximum memory limit per Container
+      min:
+        cpu: 200m # Minimum CPU request per Container (200 milli-cores)
+        memory: 6Mi # Minimum memory request per Container
+      type: Container # Type of object the limits apply to (Container or Pod)
 
 ---
 # 22. Custom Resource Definition (CRD)
@@ -524,20 +524,20 @@ spec:
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-    name: crontabs.stable.example.com # Fully qualified name of the CRD (plural.group)
+  name: crontabs.stable.example.com # Fully qualified name of the CRD (plural.group)
 spec:
-    group: stable.example.com # API group name
-    versions:
-        - name: v1 # Version name
-          served: true # CRD is served
-          storage: true # CRD is stored in etcd
-    scope: Namespaced # Resource is namespaced (or Cluster)
-    names:
-        plural: crontabs # Plural name of the resource
-        singular: crontab # Singular name of the resource
-        kind: CronTab # CamelCase name of the resource
-        shortNames:
-            - ct # Short name(s) for the resource
+  group: stable.example.com # API group name
+  versions:
+    - name: v1 # Version name
+      served: true # CRD is served
+      storage: true # CRD is stored in etcd
+  scope: Namespaced # Resource is namespaced (or Cluster)
+  names:
+    plural: crontabs # Plural name of the resource
+    singular: crontab # Singular name of the resource
+    kind: CronTab # CamelCase name of the resource
+    shortNames:
+      - ct # Short name(s) for the resource
 
 ---
 # 23. Pod Security Policy
@@ -550,22 +550,22 @@ spec:
 apiVersion: policy/v1beta1 # Note: This API version is deprecated
 kind: PodSecurityPolicy
 metadata:
-    name: privileged
+  name: privileged
 spec:
-    privileged: true # Allow privileged Pods
-    volumes:
-        - '*' # Allow all volume types
-    hostNetwork: true # Allow Pods to use the host's network namespace
-    hostIPC: true # Allow Pods to use the host's IPC namespace
-    hostPID: true # Allow Pods to use the host's PID namespace
-    runAsUser:
-        rule: 'RunAsAny' # No restriction on the user ID
-    seLinux:
-        rule: 'RunAsAny' # No restriction on SELinux labels
-    supplementalGroups:
-        rule: 'RunAsAny' # No restriction on supplemental groups
-    fsGroup:
-        rule: 'RunAsAny' # No restriction on filesystem group
+  privileged: true # Allow privileged Pods
+  volumes:
+    - '*' # Allow all volume types
+  hostNetwork: true # Allow Pods to use the host's network namespace
+  hostIPC: true # Allow Pods to use the host's IPC namespace
+  hostPID: true # Allow Pods to use the host's PID namespace
+  runAsUser:
+    rule: 'RunAsAny' # No restriction on the user ID
+  seLinux:
+    rule: 'RunAsAny' # No restriction on SELinux labels
+  supplementalGroups:
+    rule: 'RunAsAny' # No restriction on supplemental groups
+  fsGroup:
+    rule: 'RunAsAny' # No restriction on filesystem group
 
 ---
 # 24. Event
@@ -577,16 +577,16 @@ spec:
 apiVersion: v1
 kind: Event
 metadata:
-    name: my-event # Unique name of the Event within the namespace
+  name: my-event # Unique name of the Event within the namespace
 involvedObject:
-    kind: Pod # The object that this event is about
-    namespace: default
-    name: my-pod
+  kind: Pod # The object that this event is about
+  namespace: default
+  name: my-pod
 message: 'Scheduled pod' # Description of the event
 reason: 'Scheduled' # Short, machine-understandable string that gives the reason for the transition
 type: Normal # Type of event (Normal, Warning)
 source:
-    component: default-scheduler # Name of the controller or component that generated this event
+  component: default-scheduler # Name of the controller or component that generated this event
 
 ---
 # 25. Endpoints
@@ -599,10 +599,10 @@ source:
 apiVersion: v1
 kind: Endpoints
 metadata:
-    name: my-service # Name must match the Service to which this Endpoints object corresponds
+  name: my-service # Name must match the Service to which this Endpoints object corresponds
 subsets:
-    - addresses:
-          - ip: 192.168.1.1 # IP addresses of the endpoint (e.g., Pod IPs)
-      ports:
-          - port: 9376 # Port number of the endpoint (e.g., container ports)
+  - addresses:
+      - ip: 192.168.1.1 # IP addresses of the endpoint (e.g., Pod IPs)
+    ports:
+      - port: 9376 # Port number of the endpoint (e.g., container ports)
 
